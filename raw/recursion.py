@@ -1,51 +1,64 @@
-import os
-from tqdm import tqdm
 import time
 
-os.system('cls')
+# Check if there's a queen in the same column
+def is_safe(board, row, col, n):
+    # Loop thru each row
+    for i in range(row):
+        # If a queen is in the same column
+        # board[i] represents as the column in the row being looped
+        if (board[i] == col or 
+            # If both are -1, then there is a queen (diagonally)
+            board[i] - i == col - row or # Checks left-to-right
+            # If both are the same value, then there is a queen
+            board[i] + i == col + row): # Checks right-to-left
+            return False
+    # If it doesn't pass the conditions, then we can place the queen
+    return True
 
-def preload_file_count(directory):
-    print("Preloading directories and files..")
-    total_items = 0
-    for _, dirs, files in os.walk(directory):
-        total_items += len(dirs) + len(files)
-    return total_items
+def solve_n_queens(board, row, n, solutions):
+    # If the row is now equal to the n (the size of board), we add the solution
+    if row == n:
+        # Save the state of board so it won't be modified in backtracking
+        solutions.append(board[:])
+        return
+    
+    # Try placing queens in all columns for the current row
+    for col in range(n):
+        # For each column, we'll check if it's safe to place the queen
+        if is_safe(board, row, col, n):
+            board[row] = col  # Place the queen
+            solve_n_queens(board, row + 1, n, solutions)  # Recur for the next row
+            board[row] = -1  # Backtrack, remove the queen
 
-def search_file_with_progress(directory, target_fn):
-    total_items = preload_file_count(directory)
-    with tqdm(total=total_items, desc="Searching", unit="item") as pbar:
-        result = search_file(directory, target_fn, pbar)
-    return result
+def print_solution(board):
+    # Loop thru each row, checking if we place the queen or not
+    # Row in here represents the position of each queen in each row
+    # Not technically the row in what'd you think in a 2d array
+    # So it's a single-dimension array 
+    for row in board:
+        # Check each column in the board (the queens' positions)
+        # If there is a queen print Q if not then print a dot
+        # We use len(board) instead of explicitly passing n for adaptability
+        # If there ever is a case that n wasn't passed around correctly
+        line = ['Q' if col == row else '.' for col in range(len(board))]
+        print(" ".join(line))
+    print("-" * len(board) * 2)
 
-def search_file(directory, target_fn, pbar):
-    try:
-        for item in os.listdir(directory):
-            item_path = os.path.join(directory, item)
+def n_queens(n):    
+    solutions = []
+    board = [-1] * n  # Initialize the board with -1 (no queens placed)
+    
+    solve_n_queens(board, 0, n, solutions)
+    
+    print(f"Found {len(solutions)} solutions for {n}-Queens:")
+    for solution in solutions:
+        print_solution(solution)
 
-            pbar.update(1)  
-
-            if os.path.isfile(item_path) and item == target_fn:
-                return item_path
-            elif os.path.isdir(item_path):
-                result = search_file(item_path, target_fn, pbar)
-                if result:
-                    return result
-    except PermissionError:
-        
-        pass
-    return None
-
-
-directory_to_search = r"C:\Windows"  
-target_file = "img0_3840x2160.jpg"  
+# The size of the board
+n = 6
 
 start_time = time.perf_counter()
-result = search_file_with_progress(directory_to_search, target_file)
+n_queens(n)
 end_time = time.perf_counter()
 
-if result:
-    print(f"\nFile found: {result}")
-else:
-    print("\nFile was not found")
-
-print(f"Time elapsed: {end_time - start_time:.6f} seconds")
+print(f"Backtracking completed in {end_time - start_time:.6f} seconds")
