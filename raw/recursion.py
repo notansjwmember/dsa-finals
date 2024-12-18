@@ -18,7 +18,7 @@ def is_safe(board, row, col, n):
 def solve_n_queens(board, row, n, solutions):
     # If the row is now equal to the n (the size of board), we add the solution
     if row == n:
-        # Save the state of board so it won't be modified in backtracking
+        # Save the current state of board so it won't be modified in backtracking
         solutions.append(board[:])
         return
     
@@ -40,16 +40,19 @@ def print_solution(board):
         # If there is a queen print Q if not then print a dot
         # We use len(board) instead of explicitly passing n for adaptability
         # If there ever is a case that n wasn't passed around correctly
+        # Or if the recursion modified the board
         line = ['Q' if col == row else '.' for col in range(len(board))]
         print(" ".join(line))
     print("-" * len(board) * 2)
 
+# Initializer method
 def n_queens(n):    
-    solutions = []
+    solutions = [] # Initialize array of solutions
     board = [-1] * n  # Initialize the board with -1 (no queens placed)
     
-    solve_n_queens(board, 0, n, solutions)
+    solve_n_queens(board, 0, n, solutions) # Base
     
+    # After the many many recursions, we then (only) print all the valid solutions
     print(f"Found {len(solutions)} solutions for {n}-Queens:")
     for solution in solutions:
         print_solution(solution)
@@ -61,4 +64,4 @@ start_time = time.perf_counter()
 n_queens(n)
 end_time = time.perf_counter()
 
-print(f"Backtracking completed in {end_time - start_time:.6f} seconds")
+print(f"Completed in {end_time - start_time:.6f} seconds")
