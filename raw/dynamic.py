@@ -49,47 +49,35 @@ end_time = time.perf_counter()
 print(f"Fibonacci Recursive Execution Time: {end_time - start_time:0.6f} seconds")
 
 def knapsack_dp(weights, values, capacity):
-    # The length of the weights
+    # Get the number of items (length of weights array)
     n = len(weights)
     
-    # Initialize a 2d array
-    # Loop thru the range of weights added by 1 while we
-    # initialize columns with values of zero with the capacity and add 1
-    # We add 1 because we need to calculate for the nth index
+    # Create a 2D array to store the max value for each item and capacity combo
+    # Rows = items (0 to n), Columns = capacities (0 to capacity)
+    # Add 1 to both dimensions to account for the "0-item" and "0-capacity" cases
     dp = [[0] * (capacity + 1) for _ in range(n + 1)]
     
-    # Start at index 1 and stop at the last index of weight added by 1
-    # This represent the rows
+    # Start looping through the items (row by row)
     for i in range(1, n + 1):
-        # Then this is for the columns
-        # We loop until we reach the capacity added by 1
+        # Now loop through all possible capacities (column by column)
         for w in range(capacity + 1):
-            # In the base, index zero has the value zero from the initialization earlier
-            # We compare (if it's less than or equal) 
-            # The weight value weights(i - 1) behind the current weight (w)
+            # Check if the current item's weight can fit in the current capacity
             if weights[i - 1] <= w:
-                # Here we set the result of the max value between the two options
-                # Max value is calculate by the previous weight value and
-                # The weight value of the previous weight value added by the previous values value
-                # A lot of previous here but it's kinda just the concept of
-                # Taking a step backward in weights, then taking three steps backward in weights and
-                # adding it by another step backward in values
-                # Then we set the current row and column to that result of the max
-                
-                print(dp[i])
-                print(weights[i - 1] , "<=" , w)
-                print(dp[i - 1][w])
-                print(dp[i - 1][w - weights[i - 1]] + values[i - 1])
-                print()
+                # If the condition is met, we calculate the max value
+                # So we've got two options
+                # Option 1: Don't include the current item (value from the row above)
+                # Option 2: Include the current item:
+                #   - Subtract its weight from the current capacity
+                #   - Add its value to the result of that remaining capacity (row above)
                 dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - weights[i - 1]] + values[i - 1])
             else:
-                # If the current item's weight exceeds the current capacity 
-                # We set the the current row and column to the previous row's weight value
+                # If it doesn't fit, just carry over the value from the row above (previous item)
                 dp[i][w] = dp[i - 1][w]
 
-    # So we then return the value of the nth row (the last index)
-    # Which at this point is the max value achievable with all items at full capacity
+    # Return the result stored in the bottom-right corner of the table
+    # This represents the max value we can get for the given capacity and all items
     return dp[n][capacity]
+
 
 weights = [1, 3, 4, 5]
 values = [10, 40, 50, 70]
