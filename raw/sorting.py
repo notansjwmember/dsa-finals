@@ -58,7 +58,7 @@ def quick_sort(arr):
     # If the array has one or zero elements, it's already sorted, so return it as is
     if len(arr) <= 1:
         return arr
-      
+    
     # Our reference to compare the right and left side of the array
     # Essentially it is the element that is in the middle of the (current) array
     pivot = arr[len(arr) // 2]

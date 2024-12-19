@@ -56,8 +56,10 @@ def knapsack_dp(weights, values, capacity):
     # Rows = items (0 to n), Columns = capacities (0 to capacity)
     # Add 1 to both dimensions to account for the "0-item" and "0-capacity" cases
     dp = [[0] * (capacity + 1) for _ in range(n + 1)]
-    print(dp)
-    print()
+    
+    # print(dp)
+    # print()
+    
     # Start looping through the items (row by row)
     # Though we start at row 1, because row 0 is our reference
     for i in range(1, n + 1):

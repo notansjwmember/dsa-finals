@@ -30,20 +30,20 @@ def solve_n_queens(board, row, n, solutions):
             solve_n_queens(board, row + 1, n, solutions)  # Recur for the next row
             board[row] = -1  # Backtrack, remove the queen
 
-def print_solution(board):
+def print_solution(solution):
     # Loop thru each row, checking if we place the queen or not
     # Row in here represents the position of each queen in each row
     # Not technically the row in what'd you think in a 2d array
     # So it's a single-dimension array 
-    for row in board:
+    for row in solution:
         # Check each column in the board (the queens' positions)
         # If there is a queen print Q if not then print a dot
         # We use len(board) instead of explicitly passing n for adaptability
         # If there ever is a case that n wasn't passed around correctly
         # Or if the recursion modified the board
-        line = ['Q' if col == row else '.' for col in range(len(board))]
+        line = ['Q' if col == row else '.' for col in range(len(solution))]
         print(" ".join(line))
-    print("-" * len(board) * 2)
+    print("-" * len(solution) * 2)
 
 # Initializer method
 def n_queens(n):    
@@ -54,7 +54,10 @@ def n_queens(n):
     
     # After the many many recursions, we then (only) print all the valid solutions
     print(f"Found {len(solutions)} solutions for {n}-Queens:")
+    print("\nSolutions:", solutions, end="\n\n")
+    
     for solution in solutions:
+        print("Processing solution: ", solution)
         print_solution(solution)
 
 # The size of the board

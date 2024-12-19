@@ -1,6 +1,6 @@
 import time
 
-# Our sample data, should be sorted though
+# Our sample data
 dates = ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01']
 prices = [150, 170, 160, 180, 175]
 
@@ -77,7 +77,7 @@ def interpolation_search(years, target_year):
         # Return -1 if the year is not found in the list
         return -1
 
-target_year = 2012
+target_year = 2020
 
 start_time = time.perf_counter()
 index = interpolation_search(years, target_year)
