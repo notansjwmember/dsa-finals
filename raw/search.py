@@ -19,7 +19,7 @@ def binary_search(dates, target_date):
         # Check if it is what we're looking for
         if dates[mid] == target_date:
             return mid  # Return the index where the date is found
-          
+
         # If not, check if it is less than the target
         elif dates[mid] < target_date:
             # We then add the middle index by 1

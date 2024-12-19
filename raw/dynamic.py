@@ -37,7 +37,7 @@ def fibonacci_recursive(n):
         return 0
     if n == 1:
         return 1
-      
+    
     # For any other value of n, calculate the Fibonacci number by calling the function recursively
     # This calls this method for (n-1) and (n-2), summing their results
     return fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2)
