@@ -1,5 +1,7 @@
 # DP Knapsack
+import time
 
+# Helper function :)
 def print_dp_array(dp):
     count = 0
     for row in dp:
