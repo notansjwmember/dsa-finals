@@ -1,7 +1,7 @@
 import time
-import os
 
-os.system('cls')
+# For the fibonnaci problems only
+
 def fibonacci_dp(n):
     # Base conditions
     if n == 0:
